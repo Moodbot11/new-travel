@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const audioFile = files.audioFile as formidable.File;
       const fileStream = fs.createReadStream(audioFile.path);
 
-      const response = await openai.createTranscription({
+      const response = await openai.audio.transcribe({
         file: fileStream,
         model: "whisper-1",
         language: "en",
