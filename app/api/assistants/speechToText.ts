@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const formData = new FormData();
       formData.append("file", new Blob([fileContent]), audioFile.name);
 
-      const response = await openai.createTranscription({
+      const response = await openai.audio.transcriptions.create({
         file: formData,
         model: "whisper-1",
         language: "en",
