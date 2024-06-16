@@ -1,9 +1,28 @@
 import { openai } from "@/app/openai";
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export const runtime = "nodejs";
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
-// Helper function for creating a new assistant
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  switch (req.method) {
+    case 'POST':
+      if (req.url.endsWith('/textToSpeech')) {
+        return handleTextToSpeech(req, res);
+      } else if (req.url.endsWith('/speechToText')) {
+        return handleSpeechToText(req, res);
+      } else {
+        return createAssistant(req, res);
+      }
+    default:
+      res.setHeader('Allow', ['POST']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
+}
+
 async function createAssistant(req: NextApiRequest, res: NextApiResponse) {
   const assistant = await openai.beta.assistants.create({
     instructions: "You are a helpful assistant.",
@@ -38,7 +57,6 @@ async function createAssistant(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ assistantId: assistant.id });
 }
 
-// Helper function for text-to-speech
 async function handleTextToSpeech(req: NextApiRequest, res: NextApiResponse) {
   const { text } = req.body;
   const response = await openai.audio.create({
@@ -48,27 +66,10 @@ async function handleTextToSpeech(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ audioUrl: response.audio_url });
 }
 
-// Helper function for speech-to-text
 async function handleSpeechToText(req: NextApiRequest, res: NextApiResponse) {
   const { audioFile } = req.files;
   const formData = new FormData();
   formData.append("file", audioFile);
   const response = await openai.audio.transcribe(formData);
   res.status(200).json({ text: response.text });
-}
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'POST':
-      if (req.url.endsWith('/textToSpeech')) {
-        return handleTextToSpeech(req, res);
-      } else if (req.url.endsWith('/speechToText')) {
-        return handleSpeechToText(req, res);
-      } else {
-        return createAssistant(req, res);
-      }
-    default:
-      res.setHeader('Allow', ['POST']);
-      res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
 }
