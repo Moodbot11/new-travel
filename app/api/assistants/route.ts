@@ -1,12 +1,6 @@
 import { openai } from "@/app/openai";
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'POST':
@@ -23,6 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
+// Helper function for creating a new assistant
 async function createAssistant(req: NextApiRequest, res: NextApiResponse) {
   const assistant = await openai.beta.assistants.create({
     instructions: "You are a helpful assistant.",
@@ -57,6 +52,7 @@ async function createAssistant(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ assistantId: assistant.id });
 }
 
+// Helper function for text-to-speech
 async function handleTextToSpeech(req: NextApiRequest, res: NextApiResponse) {
   const { text } = req.body;
   const response = await openai.audio.create({
@@ -66,6 +62,7 @@ async function handleTextToSpeech(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({ audioUrl: response.audio_url });
 }
 
+// Helper function for speech-to-text
 async function handleSpeechToText(req: NextApiRequest, res: NextApiResponse) {
   const { audioFile } = req.files;
   const formData = new FormData();
