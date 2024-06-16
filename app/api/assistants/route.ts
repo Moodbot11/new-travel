@@ -1,9 +1,10 @@
 import { openai } from "@/app/openai";
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export const runtime = "nodejs";
 
-// Create a new assistant
-export async function POST(req, res) {
+// Helper function for creating a new assistant
+async function createAssistant(req: NextApiRequest, res: NextApiResponse) {
   const assistant = await openai.beta.assistants.create({
     instructions: "You are a helpful assistant.",
     name: "Quickstart Assistant",
@@ -37,8 +38,8 @@ export async function POST(req, res) {
   res.status(200).json({ assistantId: assistant.id });
 }
 
-// Text-to-Speech endpoint
-export async function handleTextToSpeech(req, res) {
+// Helper function for text-to-speech
+async function handleTextToSpeech(req: NextApiRequest, res: NextApiResponse) {
   const { text } = req.body;
   const response = await openai.audio.create({
     text,
@@ -47,8 +48,8 @@ export async function handleTextToSpeech(req, res) {
   res.status(200).json({ audioUrl: response.audio_url });
 }
 
-// Speech-to-Text endpoint
-export async function handleSpeechToText(req, res) {
+// Helper function for speech-to-text
+async function handleSpeechToText(req: NextApiRequest, res: NextApiResponse) {
   const { audioFile } = req.files;
   const formData = new FormData();
   formData.append("file", audioFile);
@@ -56,15 +57,15 @@ export async function handleSpeechToText(req, res) {
   res.status(200).json({ text: response.text });
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'POST':
-      if (req.url === '/api/assistants/textToSpeech') {
+      if (req.url.endsWith('/textToSpeech')) {
         return handleTextToSpeech(req, res);
-      } else if (req.url === '/api/assistants/speechToText') {
+      } else if (req.url.endsWith('/speechToText')) {
         return handleSpeechToText(req, res);
       } else {
-        return POST(req, res);
+        return createAssistant(req, res);
       }
     default:
       res.setHeader('Allow', ['POST']);
