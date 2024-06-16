@@ -1,0 +1,35 @@
+//The speech endpoint takes in three key inputs: the model, the text that should be turned //into audio, and the voice to be used for the audio generation. A simple request would look //like the following:
+
+import fs from "fs";
+import path from "path";
+import OpenAI from "openai";
+
+const openai = new OpenAI();
+
+const speechFile = path.resolve("./speech.mp3");
+
+async function main() {
+  const mp3 = await openai.audio.speech.create({
+    model: "tts-1",
+    voice: "alloy",
+    input: "Today is a wonderful day to build something people love!",
+  });
+  console.log(speechFile);
+  const buffer = Buffer.from(await mp3.arrayBuffer());
+  await fs.promises.writeFile(speechFile, buffer);
+}
+main();
+
+
+
+from openai import OpenAI
+
+client = OpenAI()
+
+response = client.audio.speech.create(
+    model="tts-1",
+    voice="alloy",
+    input="Hello world! This is a streaming test.",
+)
+
+response.stream_to_file("output.mp3")

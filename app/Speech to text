@@ -1,0 +1,35 @@
+//The transcriptions API takes as input the audio file you want to transcribe and the desired //output file format for the transcription of the audio. 
+
+
+import fs from "fs";
+import OpenAI from "openai";
+
+const openai = new OpenAI();
+
+async function main() {
+  const transcription = await openai.audio.transcriptions.create({
+    file: fs.createReadStream("/path/to/file/audio.mp3"),
+    model: "whisper-1",
+  });
+
+  console.log(transcription.text);
+}
+main();
+
+//The below Audio API also allows you to set additional parameters in a request. For example, //if you want to set the response_format as text, your request would look like the following:
+
+import fs from "fs";
+import OpenAI from "openai";
+
+const openai = new OpenAI();
+
+async function main() {
+  const transcription = await openai.audio.transcriptions.create({
+    file: fs.createReadStream("/path/to/file/speech.mp3"),
+    model: "whisper-1",
+    response_format: "text",
+  });
+
+  console.log(transcription.text);
+}
+main();
