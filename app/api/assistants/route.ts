@@ -36,3 +36,20 @@ export async function POST() {
   });
   return Response.json({ assistantId: assistant.id });
 }
+
+// Text-to-Speech endpoint
+export async function textToSpeech(text: string) {
+  const response = await openai.audio.create({
+    text,
+    voice: "en_us_male",
+  });
+  return response.audio_url;
+}
+
+// Speech-to-Text endpoint
+export async function speechToText(audioFile: File) {
+  const formData = new FormData();
+  formData.append("file", audioFile);
+  const response = await openai.audio.transcribe(formData);
+  return response.text;
+}
