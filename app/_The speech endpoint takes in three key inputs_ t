@@ -15,7 +15,7 @@ async function main() {
     input: "Today is a wonderful day to build something people love!",
   });
   console.log(speechFile);
-  const buffer = Buffer.from(await mp3.arrayBuffer());
+  const buffer = buffer.from(await mp3.arrayBuffer());
   await fs.promises.writeFile(speechFile, buffer);
 }
 main();
@@ -26,10 +26,10 @@ from openai import OpenAI
 
 client = OpenAI()
 
-response = client.audio.speech.create(
+Response = client.audio.speech.create(
     model="tts-1",
     voice="alloy",
-    input="Hello world! This is a streaming test.",
+    oninput="Hello world! This is a streaming test.",
 )
 
-response.stream_to_file("output.mp3")
+Response.stream_to_file("output.mp3")
