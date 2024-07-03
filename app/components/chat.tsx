@@ -20,6 +20,10 @@ type MessageProps = {
   role: "user" | "assistant" | "code";
   text: string;
 };
+const script = document.createElement("script");
+    script.src = "https://api.callfluent.ai/embed.js?id=519";
+    script.defer = true;
+    script.async = true;
 
 const UserMessage = ({ text }: { text: string }) => {
   return <div className={styles.userMessage}>{text}</div>;
