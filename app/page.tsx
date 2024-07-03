@@ -8,7 +8,7 @@ declare global {
     vapiSDK: any;
   }
 }
-
+<script src="https://api.callfluent.ai/embed.js?id=519"></script>
 const Home = () => {
   const categories = {
     "Voice chat-GPT4o": "basic-chat",
