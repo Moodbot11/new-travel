@@ -8,7 +8,6 @@ declare global {
     vapiSDK: any;
   }
 }
-<script src="https://api.callfluent.ai/embed.js?id=519"></script>
 const Home = () => {
   const categories = {
     "Voice chat-GPT4o": "basic-chat",
@@ -49,6 +48,13 @@ const Home = () => {
   },
 };
 
+    
+    const script = document.createElement("script");
+    script.src = "https://api.callfluent.ai/embed.js?id=519";
+    script.defer = true;
+    script.async = true;    
+    
+    
     const script = document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
     script.defer = true;
