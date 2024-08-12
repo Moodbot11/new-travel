@@ -2,11 +2,6 @@
 
 import React, { useEffect } from "react";
 import styles from "./page.module.css";
-
-declare global {
-  interface Window {
-    vapiSDK: any;
-  }
 }
 const Home = () => {
   const categories = {
@@ -38,10 +33,7 @@ const Home = () => {
           <p>Meet Internet Entity, a true entity like no other. Imagine having a Lawyer, Doctor, Financial Genius, Trusted Friend, Scientist, Physicist, Mathematician, Philosopher, and anything else you can envision working with you.</p> 
         </div>
       </section>
-      <section className={styles.widgetSection}>
-        <div className={styles.widget} id="vapi-widget">
-          {/* The Vapi widget will be injected here */}
-        </div>
+    
        <div className={styles.center}>
           <h3>If you like you can all call me on your cell phone! Internet Entity +1 (310) 776 3204 --------------------- Im always happy to help you 24 hours a day</h3> 
         </div>
