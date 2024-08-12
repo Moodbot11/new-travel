@@ -2,7 +2,7 @@
 
 import React from "react";
 import styles from "./page.module.css"; // Ensure this file contains your CSS styles
-import Chat from "../../components/chat";
+import Chat from "../components/chat";
 
 const Home = () => {
   return (
